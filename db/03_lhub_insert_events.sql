@@ -22,7 +22,7 @@ INSERT INTO events (event_id, description, location, date_time) VALUES (16, "in-
 INSERT INTO events (event_id, description, location, date_time) VALUES (17, "document signing", "meeting room 3", "2024-02-06T15:25:00Z");
 INSERT INTO events (event_id, description, location, date_time) VALUES (18, "in-person meeting", "Cafe", "2024-03-23T09:55:00Z");
 INSERT INTO events (event_id, description, location, date_time) VALUES (19, "court appearance", "New York County Courthouse", "2024-02-16T11:40:00Z");
-INSERT INTO events (event_id, description, location, date_time) VALUES (20, "document signing", "Cafe", "2024-01-26T16:30:00Z");
+INSERT INTO events (event_id, description, location, date_time) VALUES (20, "document signing", "office", "2024-01-26T16:30:00Z");
 INSERT INTO events (event_id, description, location, date_time) VALUES (21, "in-person meeting", "office", "2024-01-19T14:15:00Z");
 INSERT INTO events (event_id, description, location, date_time) VALUES (22, "court appearance", "Queens County Supreme Court", "2024-03-22T10:30:00Z");
 INSERT INTO events (event_id, description, location, date_time) VALUES (23, "document signing", "meeting room 4", "2024-01-29T11:50:00Z");
