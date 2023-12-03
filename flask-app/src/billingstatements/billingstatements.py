@@ -98,13 +98,16 @@ def put_casefile(billingstatementID):
     communication_type = the_data['communication_type']
     number_of_hours = the_data['number_of_hours']
 
-    cursor.execute('UPDATE billing_statement\
-        SET {0}, {0}, {}, {0}\
-        WHERE client_id = {0}').format(employee_id, case_id, communication_type, number_of_hours, billingstatementID)
+    cursor.execute('UPDATE billing_statement SET\
+                   employee_id = {0},\
+                   case_id = {0},\
+                   communication_type = {},\
+                   number_of_hours = {0}\
+                   WHERE client_id = {0}').format(employee_id, case_id, communication_type, number_of_hours, billingstatementID)
 
     db.get_db().commit()
     
-    return 'Success!'
+    return 'Event updated'
 
 # Delete the given billing statement
 @billingstatements.route('/billingstatements/<billingstatementID>', methods=['DELETE'])
@@ -119,4 +122,4 @@ def delete_casefiles(billingstatementID):
     the_response = make_response(jsonify(json_data))
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
-    return the_response
+    return 'Event deleted'

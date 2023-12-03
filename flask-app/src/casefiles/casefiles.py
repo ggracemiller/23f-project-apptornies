@@ -21,7 +21,7 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM  case_file join client_case WHERE employee_id = {0} AND client_id = {0}').format(employee, client)
+        cursor.execute('SELECT * FROM  case_file JOIN client_case WHERE employee_id = {0} AND client_id = {0}').format(employee, client)
     elif employee:
         cursor.execute('SELECT * FROM case_file JOIN client_case WHERE employee_id = {0}').format(employee)
     elif client:
@@ -105,18 +105,21 @@ def put_casefile(casefileID):
     close_date = the_data['close_date']
     employee_id = the_data['employee_id']
     client_id = the_data['client_id']
-
-    cursor.execute('UPDATE case_file\
-        SET {0}, {},\
-        where client_id = {0}').format(employee_id, file, casefileID)
     
-    cursor.execute('UPDATE client_case\
-        set {}, {}, {0},\
-        where client_id = {0}').format(start_date, close_date, client_id, casefileID)
+    cursor.execute('UPDATE case_file SET\
+                   employee_id = {0},\
+                   file = {}\
+                   WHERE client_id = {0}').format(employee_id, file, casefileID)
+    
+    cursor.execute('UPDATE client_case SET\
+                   start_date = {},\
+                   close_date = {},\
+                   client_id = {0}\
+                   WHERE client_id = {0}').format(start_date, close_date, client_id, casefileID)
     
     db.get_db().commit()
     
-    return 'Success!'
+    return 'Event updated'
 
 # Delete the given case file
 @casefiles.route('/casefiles/<casefileID>', methods=['DELETE'])
@@ -131,4 +134,4 @@ def delete_casefiles(casefileID):
     the_response = make_response(jsonify(json_data))
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
-    return the_response
+    return 'Event deleted'
