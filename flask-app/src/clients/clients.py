@@ -138,7 +138,7 @@ def delete_client(id):
     
     return 'Success!'
 
-@clients.route('/clients/<client-id>/<employee-id>', methods={'POT'})
+@clients.route('/clients/<client-id>/<employee-id>', methods={'POST'})
 def new_client_employee_association(client_id, employee_id):
 
     # Constructing the query
