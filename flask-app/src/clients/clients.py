@@ -138,6 +138,21 @@ def delete_client(id):
     
     return 'Success!'
 
+@clients.route('/clients/<client-id>/<employee-id>', methods={'POT'})
+def new_client_employee_association(client_id, employee_id):
+
+    # Constructing the query
+    query = 'INSERT INTO employee_client (employee_id, client_id) VALUES ('
+    query += str(employee_id) + ', ' + str(client_id) + ')'
+    current_app.logger.info(query)
+
+    # executing and committing the update statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
 @clients.route('/clients/<client-id>/<employee-id>', methods={'PUT'})
 def associate_client_employee(client_id, employee_id):
 
