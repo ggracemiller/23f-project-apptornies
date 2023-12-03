@@ -21,11 +21,11 @@ def get_events():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM  event JOIN employee_event JOIN client_event WHERE employee_id = {0} AND client_id = {0}').format(employee, client)
+        cursor.execute('SELECT * FROM  event JOIN employee_event JOIN client_event WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
     elif employee:
-        cursor.execute('SELECT * FROM  event JOIN employee_event WHERE employee_id = {0}').format(employee)
+        cursor.execute('SELECT * FROM  event JOIN employee_event WHERE employee_id = {0}'.format(employee))
     elif client:
-        cursor.execute('SELECT * FROM  event JOIN client_event WHERE client_id = {0}').format(client)
+        cursor.execute('SELECT * FROM  event JOIN client_event WHERE client_id = {0}'.format(client))
     else:
         cursor.execute('SELECT * FROM  event')
 
