@@ -66,7 +66,7 @@ def get_event(event_id):
         SELECT event_id, description, location, date_time
         FROM events
         WHERE event_id = given_event_id
-        ORDER BY date_time
+        ORDER BY date_time ASC
     '''
     ### not sure what to do with reutrn the given event by id here ###
 
