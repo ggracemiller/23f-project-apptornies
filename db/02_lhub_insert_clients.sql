@@ -1,3 +1,8 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+use `LHUB`;
+
 insert into client (client_id, street, city, state, zip, last_name, first_name, email, phone_number) values (1, 'David', 'TX', 'dtorrance0@examiner.com', '79410', 'Torrance', 'Drugi', 'dtorrance0@redcross.org', '806-905-4212');
 insert into client (client_id, street, city, state, zip, last_name, first_name, email, phone_number) values (2, 'Forest Run', 'MI', 'gchansonne1@redcross.org', '48609', 'Chansonne', 'Glyn', 'gchansonne1@oakley.com', '989-267-5165');
 insert into client (client_id, street, city, state, zip, last_name, first_name, email, phone_number) values (3, 'Milwaukee', 'OK', 'hpenk2@pinterest.com', '73142', 'Penk', 'Hartwell', 'hpenk2@timesonline.co.uk', '405-868-4721');
