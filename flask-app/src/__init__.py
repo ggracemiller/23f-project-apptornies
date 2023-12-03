@@ -38,6 +38,7 @@ def create_app():
     from src.casefiles.casefiles  import casefiles
     from src.billingstatements.billingstatements import billingstatements
     from src.employees.employees  import employees
+    from src.clients.clients  import clients
 
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(billingstatements,    url_prefix='/bs')
 
     app.register_blueprint(employees,    url_prefix='/e')
+    app.register_blueprint(clients,    url_prefix='/cl')
 
     # Don't forget to return the app object
     return app
