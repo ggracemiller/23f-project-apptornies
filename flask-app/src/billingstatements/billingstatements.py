@@ -21,11 +21,11 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0} and client_id = {0}').format(employee, client)
+        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0} and client_id = {0}'.format(employee, client))
     elif employee:
-        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0}').format(employee)
+        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0}'.format(employee))
     elif client:
-        cursor.execute('SELECT * FROM billing_statement WHERE client_id = {0}').format(client)
+        cursor.execute('SELECT * FROM billing_statement WHERE client_id = {0}'.format(client))
     else:
         cursor.execute('SELECT * FROM billing_statement')
 
@@ -72,7 +72,7 @@ def post_casefiles():
 @billingstatements.route('/billingstatements/<billingstatementID>', methods=['GET'])
 def get_specific_casefile(billingstatementID):
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT * FROM billing_statement WHERE billing_statement_id = {0}').format(billingstatementID)
+    cursor.execute('SELECT * FROM billing_statement WHERE billing_statement_id = {0}'.format(billingstatementID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -103,7 +103,7 @@ def put_casefile(billingstatementID):
                    case_id = {0},\
                    communication_type = {},\
                    number_of_hours = {0}\
-                   WHERE client_id = {0}').format(employee_id, case_id, communication_type, number_of_hours, billingstatementID)
+                   WHERE client_id = {0}'.format(employee_id, case_id, communication_type, number_of_hours, billingstatementID))
 
     db.get_db().commit()
     

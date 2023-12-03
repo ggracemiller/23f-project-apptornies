@@ -138,7 +138,7 @@ def delete_client(id):
     
     return 'Success!'
 
-@clients.route('/clients/<client-id>/<employee-id>', methods={'POST'})
+@clients.route('/clients/<clientId>/<employeeId>', methods={'POST'})
 def new_client_employee_association(client_id, employee_id):
 
     # Constructing the query
@@ -153,7 +153,7 @@ def new_client_employee_association(client_id, employee_id):
     
     return 'Success!'
 
-@clients.route('/clients/<client-id>/<employee-id>', methods={'PUT'})
+@clients.route('/clients/<clientId>/<employeeId>', methods={'PUT'})
 def associate_client_employee(client_id, employee_id):
 
     # Constructing the query
@@ -169,7 +169,7 @@ def associate_client_employee(client_id, employee_id):
     
     return 'Success!'
 
-@clients.route('/clients/<client-id>/<employee-id>', methods={'DELETE'})
+@clients.route('/clients/<clientId>/<employeeId>', methods={'DELETE'})
 def disassociate_client_employee(client_id, employee_id):
     # Constructing the query
     query = 'DELETE FROM employee_client'

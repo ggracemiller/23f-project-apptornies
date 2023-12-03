@@ -1,3 +1,8 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+use `LHUB`;
+
 insert into case_file (case_id, employee_id, file) values (1, 1, 'Pellentesque.gif');
 insert into case_file (case_id, employee_id, file) values (2, 2, 'Ut.tiff');
 insert into case_file (case_id, employee_id, file) values (3, 3, 'HabitassePlateaDictumst.png');

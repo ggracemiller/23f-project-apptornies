@@ -21,13 +21,13 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM  case_file JOIN client_case WHERE employee_id = {0} AND client_id = {0}').format(employee, client)
+        cursor.execute('SELECT * FROM  case_file JOIN client_case WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
     elif employee:
-        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE employee_id = {0}').format(employee)
+        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE employee_id = {0}'.format(employee))
     elif client:
-        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE client_id = {0}').format(client)
+        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE client_id = {0}'.format(client))
     else:
-        cursor.execute('SELECT * FROM case_file JOIN client_case')
+        cursor.execute('SELECT * FROM case_file JOIN client_case ON case_file.case_id = client_case.case_id')
 
     row_headers = [x[0] for x in cursor.description]
     json_data = []
@@ -79,7 +79,7 @@ def post_casefiles():
 @casefiles.route('/casefiles/<casefileID>', methods=['GET'])
 def get_casefile(casefileID):
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT * FROM case_file join client_case WHERE case_file_id = {0}').format(casefileID)
+    cursor.execute('SELECT * FROM case_file join client_case WHERE case_file_id = {0}'.format(casefileID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -109,13 +109,13 @@ def put_casefile(casefileID):
     cursor.execute('UPDATE case_file SET\
                    employee_id = {0},\
                    file = {}\
-                   WHERE client_id = {0}').format(employee_id, file, casefileID)
+                   WHERE client_id = {0}'.format(employee_id, file, casefileID))
     
     cursor.execute('UPDATE client_case SET\
                    start_date = {},\
                    close_date = {},\
                    client_id = {0}\
-                   WHERE client_id = {0}').format(start_date, close_date, client_id, casefileID)
+                   WHERE client_id = {0}'.format(start_date, close_date, client_id, casefileID))
     
     db.get_db().commit()
     

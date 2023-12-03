@@ -1,3 +1,8 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+use `LHUB`;
+
 insert into billing_statement (employee_id, case_id, communication_type, number_of_hours) values (1, 1, 'in-person', 3.01);
 insert into billing_statement (employee_id, case_id, communication_type, number_of_hours) values (2, 2, 'in-person', 73.76);
 insert into billing_statement (employee_id, case_id, communication_type, number_of_hours) values (3, 3, 'in-person', 39.65);

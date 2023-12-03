@@ -1,3 +1,8 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+use `LHUB`;
+
 insert into client (street, city, state, zip, last_name, first_name, email, phone_number) values ('Orin', 'Des Moines', 'IA', '50362', 'Draper', 'Gwenora', 'gdraper0@amazon.co.jp', '515-113-6777');
 insert into client (street, city, state, zip, last_name, first_name, email, phone_number) values ('Warbler', 'Denver', 'CO', '80204', 'Northidge', 'Claiborn', 'cnorthidge1@ifeng.com', '303-825-2956');
 insert into client (street, city, state, zip, last_name, first_name, email, phone_number) values ('Grayhawk', 'Topeka', 'KS', '66617', 'Wye', 'Derby', 'dwye2@wikimedia.org', '785-560-5689');

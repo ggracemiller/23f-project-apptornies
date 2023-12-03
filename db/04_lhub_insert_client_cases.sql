@@ -1,3 +1,8 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+use `LHUB`;
+
 insert into client_case (start_date, close_date, client_id) values ('2016-04-24 11:03:23', '2024-02-13 11:17:25', 1);
 insert into client_case (start_date, close_date, client_id) values ('2022-10-19 06:00:45', '2025-05-12 14:03:08', 2);
 insert into client_case (start_date, close_date, client_id) values ('2020-12-24 13:11:15', '2025-04-27 07:39:46', 3);

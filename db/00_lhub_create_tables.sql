@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `LHUB`.`case_file` (
    case_file_id INTEGER PRIMARY KEY AUTO_INCREMENT,
    case_id INTEGER NOT NULL,
    employee_id INTEGER NOT NULL,
-   file BLOB,
+   file VARCHAR(50),
    FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
    FOREIGN KEY (case_id) REFERENCES client_case(case_id)
 );
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `LHUB`.`employee_billing` (
    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
-CREATE TABLE IF NOT EXISTS `LHUB`.`event` (
+CREATE TABLE IF NOT EXISTS `LHUB`.`events` (
    event_id INTEGER PRIMARY KEY AUTO_INCREMENT,
    description VARCHAR(2048) NOT NULL,
    location VARCHAR(1048),
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `LHUB`.`employee_event` (
    event_id INTEGER,
    employee_id INTEGER,
    PRIMARY KEY(event_id, employee_id),
-   FOREIGN KEY (event_id) REFERENCES event(event_id),
+   FOREIGN KEY (event_id) REFERENCES events(event_id),
    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `LHUB`.`client_event` (
    event_id INTEGER,
    client_id INTEGER,
    PRIMARY KEY(event_id, client_id),
-   FOREIGN KEY (event_id) REFERENCES event(event_id),
+   FOREIGN KEY (event_id) REFERENCES events(event_id),
    FOREIGN KEY (client_id) REFERENCES client(client_id)
 );
 
