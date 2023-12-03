@@ -58,7 +58,6 @@ def add_new_employee():
     email = the_data['email']
     gender = the_data['gender']
     birthdate = the_data['birthdate']
-    print(street)
 
     # Constructing the query
     query = 'insert into employee (street, city, state, zip, hourly_rate, last_name, first_name, employee_type, phone_number, email, gender, birthdate) values (' 
