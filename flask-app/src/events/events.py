@@ -21,13 +21,13 @@ def get_events():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM  event JOIN employee_event JOIN client_event WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
+        cursor.execute('SELECT * FROM  events JOIN employee_event JOIN client_event WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
     elif employee:
-        cursor.execute('SELECT * FROM  event JOIN employee_event WHERE employee_id = {0}'.format(employee))
+        cursor.execute('SELECT * FROM  events JOIN employee_event WHERE employee_id = {0}'.format(employee))
     elif client:
-        cursor.execute('SELECT * FROM  event JOIN client_event WHERE client_id = {0}'.format(client))
+        cursor.execute('SELECT * FROM  events JOIN client_event WHERE client_id = {0}'.format(client))
     else:
-        cursor.execute('SELECT * FROM  event')
+        cursor.execute('SELECT * FROM  events')
 
     row_headers = [x[0] for x in cursor.description]
     json_data = []
@@ -111,7 +111,7 @@ def update_event(eventID):
     location = the_data['event_location']
     time = the_data['event_datetime']
 
-    cursor.execute('UPDATE event SET\
+    cursor.execute('UPDATE events SET\
                    event = {0},\
                    description = {},\
                    location = {},\
@@ -126,7 +126,7 @@ def update_event(eventID):
 @events.route('/events/<eventID>', methods=['DELETE'])
 def delete_event(eventID):
     cursor = db.get_db().cursor()
-    cursor.execute('DELETE FROM event WHERE event_id = {0}'.format(eventID))
+    cursor.execute('DELETE FROM events WHERE event_id = {0}'.format(eventID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
