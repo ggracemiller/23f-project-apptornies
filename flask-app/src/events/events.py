@@ -1,35 +1,43 @@
 from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
-import sys
+
 
 events = Blueprint('events', __name__)
 
+def getValString(val):
+    if (val is None):
+        return 'Null'
+    else:
+      return '"' + str(val) + '"'
+
 # Return a list of all events
+# Checks for employee and client query string parameters
+# Specifies the list based on them
 @events.route('/events', methods=['GET'])
 def get_events():
-    # get a cursor object from the database
     cursor = db.get_db().cursor()
+    employee = request.args.get('employee')
+    client = request.args.get('client')
 
-    # use cursor to query the database for a list of events
-    cursor.execute('SELECT * FROM events')
+    if employee and client:
+        cursor.execute('SELECT * FROM  event JOIN employee_event JOIN client_event WHERE employee_id = {0} AND client_id = {0}').format(employee, client)
+    elif employee:
+        cursor.execute('SELECT * FROM  event JOIN employee_event WHERE employee_id = {0}').format(employee)
+    elif client:
+        cursor.execute('SELECT * FROM  event JOIN client_event WHERE client_id = {0}').format(client)
+    else:
+        cursor.execute('SELECT * FROM  event')
 
-    # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
+    row_headers = [x[0] for x in cursor.description]
     json_data = []
-
-    # fetch all the data from the cursor
     theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
     for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-
-    return jsonify(json_data)
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
 
 # Add an event to the system
 @events.route('/events', methods=['POST'])
@@ -60,15 +68,15 @@ def add_event():
     return 'Success!'
 
 # Return the given event by id
-@events.route('/events/<event_id>', methods=['GET'])
-def get_event(event_id):
+@events.route('/events/<eventID>', methods=['GET'])
+def get_event(eventID):
     cursor = db.get_db().cursor()
     query = '''
         SELECT event_id, description, location, date_time
         FROM events
         WHERE event_id = {0}
         ORDER BY date_time ASC
-    '''.format(event_id)
+    '''.format(eventID)
 
     cursor.execute(query)
     # grab the column headers from the returned data
@@ -89,69 +97,42 @@ def get_event(event_id):
     return jsonify(json_data)
 
 # Update an event in the system
-@events.route('/events/<event_id>', methods=['PUT'])
-def update_event(event_id):
-    # ...
+@events.route('/events/<eventID>', methods=['PUT'])
+def update_event(eventID):
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    cursor = db.get_db().cursor()
+
+    #extracting the variable
+    event = the_data['event_id']
+    description = the_data['event_description']
+    location = the_data['event_location']
+    time = the_data['event_datetime']
+
+    cursor.execute('UPDATE event SET\
+                   event = {0},\
+                   description = {},\
+                   location = {},\
+                   time = {}\
+                   WHERE client_id = {0}').format(event, description, location, time, eventID)
+    
+    db.get_db().commit()
+    
     return 'Event updated'
 
 # Remove an event from the system
-@events.route('/events/<event_id>', methods=['DELETE'])
-def delete_event(event_id):
-    # ...
+@events.route('/events/<eventID>', methods=['DELETE'])
+def delete_event(eventID):
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM event WHERE event_id = {0}'.format(eventID))
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
     return 'Event deleted'
-
-# Return a list of events associated with the given employee
-@events.route('/events', methods=['GET']) # events?employee={employee_id} #route format?
-def get_events_by_employee():
-    employee_id = request.args.get('employee')
-    # get a cursor object from the database
-    cursor = db.get_db().cursor()
-
-    # use cursor to query the database for a list of products
-    cursor.execute('SELECT * WHERE event_id = ')
-
-    # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
-    json_data = []
-
-    # fetch all the data from the cursor
-    theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-
-    return jsonify(json_data)  
-
-# Return a list of events associated with the given client
-@events.route('/events', methods=['GET']) # events?client={client_id} #route format
-def get_events_by_client():
-    client_id = request.args.get('client')
-    employee_id = request.args.get('employee')
-    # get a cursor object from the database
-    cursor = db.get_db().cursor()
-
-    # use cursor to query the database for a list of products
-    cursor.execute('SELECT event_id, description, location, date_time FROM events WHERE event_id = ')
-
-    # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
-    json_data = []
-
-    # fetch all the data from the cursor
-    theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-
-    return jsonify(json_data)  
-
