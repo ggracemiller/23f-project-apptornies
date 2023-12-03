@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
+import sys
 
 events = Blueprint('events', __name__)
 
@@ -10,8 +11,8 @@ def get_events():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    # use cursor to query the database for a list of products
-    cursor.execute('SELECT event_id, description, location, date_time FROM events')
+    # use cursor to query the database for a list of events
+    cursor.execute('SELECT * FROM events')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -44,11 +45,11 @@ def add_event():
     time = the_data['event_datetime']
 
     # Constructing the query
-    query = 'insert into events (event_id, description, location, date_time) values ("'
-    query += event + '", "'
-    query += description + '", "'
-    query += location + '", "'
-    query += time + '", "'
+    query = 'insert into events (event_id, description, location, date_time) values (' 
+    query += getValString(event) + ', '
+    query += getValString(description) + ', '
+    query += getValString(location) + ', '
+    query += getValString(time) + ')'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -65,10 +66,9 @@ def get_event(event_id):
     query = '''
         SELECT event_id, description, location, date_time
         FROM events
-        WHERE event_id = given_event_id
+        WHERE event_id = {0}
         ORDER BY date_time ASC
-    '''
-    ### not sure what to do with reutrn the given event by id here ###
+    '''.format(event_id)
 
     cursor.execute(query)
     # grab the column headers from the returned data
@@ -108,7 +108,7 @@ def get_events_by_employee():
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT event_id, description, location, date_time FROM events WHERE event_id = ')
+    cursor.execute('SELECT * WHERE event_id = ')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
