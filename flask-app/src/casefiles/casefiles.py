@@ -5,6 +5,12 @@ from src import db
 
 casefiles = Blueprint('casefiles', __name__)
 
+def getValString(val):
+    if (val is None):
+        return 'Null'
+    else:
+      return '"' + str(val) + '"'
+
 # Get a list of all case files
 # Checks for employee and client query string parameters
 # Specifies the list based on them
@@ -15,20 +21,13 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('select file, start_date, close_date,\
-        from case_file join client_case\
-        where employee_id = {} and client_id = {}').format(employee, client)
+        cursor.execute('SELECT * FROM  case_file join client_case WHERE employee_id = {0} AND client_id = {0}').format(employee, client)
     elif employee:
-        cursor.execute('select file, start_date, close_date,\
-        from case_file join client_case\
-        where employee_id = {}').format(employee)
+        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE employee_id = {0}').format(employee)
     elif client:
-        cursor.execute('select file, start_date, close_date,\
-        from case_file join client_case\
-        where client_id = {}').format(client)
+        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE client_id = {0}').format(client)
     else:
-        cursor.execute('select file, start_date, close_date,\
-        from case_file join client_case')
+        cursor.execute('SELECT * FROM case_file JOIN client_case')
 
     row_headers = [x[0] for x in cursor.description]
     json_data = []
@@ -54,22 +53,23 @@ def post_casefiles():
     employee_id = the_data['employee_id']
     client_id = the_data['client_id']
 
-    query1 = 'insert into client_case (start_date, close_date, client_id) values ("'
-    query1 += str(start_date) + '", "' # how to get case_id when it was just created?
-    query1 += str(close_date) + '", "'
-    query1 += str(client_id) + ')'
+    query1 = 'INSERT INTO client_case (start_date, close_date, client_id) VALUES ("'
+    query1 += getValString(start_date) + '", "'
+    query1 += getValString(close_date) + '", "'
+    query1 += getValString(client_id) + ')'
     current_app.logger.info(query1)
-
-    # Constructing the query
-    query2 = 'insert into case_file (case_id, employee_id, file) values ("'
-    query2 += case_id + '", "' # how to get case_id when it was just created?
-    query2 += file + '", "'
-    query2 += str(employee_id) + ')'
-    current_app.logger.info(query2)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     cursor.execute(query1)
+
+    # Constructing the query
+    query2 = 'INSERT INTO case_file (case_id, employee_id, file) VALUES ("'
+    query2 += cursor.lastrowid + '", "'
+    query2 += getValString(file) + '", "'
+    query2 += getValString(employee_id) + ')'
+    current_app.logger.info(query2)
+
     cursor.execute(query2)
     db.get_db().commit()
     
@@ -79,9 +79,7 @@ def post_casefiles():
 @casefiles.route('/casefiles/<casefileID>', methods=['GET'])
 def get_casefile(casefileID):
     cursor = db.get_db().cursor()
-    cursor.execute('select file, start_date, close_date,\
-        from case_file join client_case\
-        where case_file_id = {}').format(casefileID)
+    cursor.execute('SELECT * FROM case_file join client_case WHERE case_file_id = {0}').format(casefileID)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -94,7 +92,7 @@ def get_casefile(casefileID):
 
 # Update the given case file
 @casefiles.route('/casefiles/<casefileID>', methods=['PUT'])
-def get_casefile(casefileID):
+def put_casefile(casefileID):
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -108,13 +106,13 @@ def get_casefile(casefileID):
     employee_id = the_data['employee_id']
     client_id = the_data['client_id']
 
-    cursor.execute('update case_file\
-        set {}, {},\
-        where client_id = {}').format(employee_id, file, casefileID)
+    cursor.execute('UPDATE case_file\
+        SET {0}, {},\
+        where client_id = {0}').format(employee_id, file, casefileID)
     
-    cursor.execute('update client_case\
-        set {}, {}, {},\
-        where client_id = {}').format(start_date, close_date, client_id, casefileID)
+    cursor.execute('UPDATE client_case\
+        set {}, {}, {0},\
+        where client_id = {0}').format(start_date, close_date, client_id, casefileID)
     
     db.get_db().commit()
     
@@ -122,9 +120,9 @@ def get_casefile(casefileID):
 
 # Delete the given case file
 @casefiles.route('/casefiles/<casefileID>', methods=['DELETE'])
-def put_casefiles(casefileID):
+def delete_casefiles(casefileID):
     cursor = db.get_db().cursor()
-    cursor.execute('delete from case_file where case_file_id = {0}'.format(casefileID))
+    cursor.execute('DELETE FROM case_file WHERE case_file_id = {0}'.format(casefileID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()

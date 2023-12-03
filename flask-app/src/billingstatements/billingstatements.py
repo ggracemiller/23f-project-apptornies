@@ -5,6 +5,12 @@ from src import db
 
 billingstatements = Blueprint('billingstatements', __name__)
 
+def getValString(val):
+    if (val is None):
+        return 'Null'
+    else:
+      return '"' + str(val) + '"'
+
 # Get a list of all billing statements
 # Checks for employee and client query string parameters
 # Specifies the list based on them
@@ -15,20 +21,13 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('select employee_id, case_id, communication_type, number_of_hours,\
-        from billing_statement join client_case\
-        where employee_id = {} and client_id = {}').format(employee, client)
+        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0} and client_id = {0}').format(employee, client)
     elif employee:
-        cursor.execute('select employee_id, case_id, communication_type, number_of_hours,\
-        from billing_statement join client_case\
-        where employee_id = {}').format(employee)
+        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0}').format(employee)
     elif client:
-        cursor.execute('select employee_id, case_id, communication_type, number_of_hours,\
-        from billing_statement join client_case\
-        where client_id = {}').format(client)
+        cursor.execute('SELECT * FROM billing_statement WHERE client_id = {0}').format(client)
     else:
-        cursor.execute('select employee_id, case_id, communication_type, number_of_hours,\
-        from billing_statement')
+        cursor.execute('SELECT * FROM billing_statement')
 
     row_headers = [x[0] for x in cursor.description]
     json_data = []
@@ -55,11 +54,11 @@ def post_casefiles():
     number_of_hours = the_data['number_of_hours']
 
     # Constructing the query
-    query = 'insert into products (employee_id, case_id, communication_type, number_of_hours) values ("'
-    query += str(employee_id) + '", "'
-    query += str(case_id) + '", "'
-    query += communication_type + '", '
-    query += str(number_of_hours) + ')'
+    query = 'INSERT INTO products (employee_id, case_id, communication_type, number_of_hours) VALUES ("'
+    query += getValString(employee_id) + '", "'
+    query += getValString(case_id) + '", "'
+    query += getValString(communication_type) + '", '
+    query += getValString(number_of_hours) + ')'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -71,11 +70,9 @@ def post_casefiles():
 
 # Get the given billing statement
 @billingstatements.route('/billingstatements/<billingstatementID>', methods=['GET'])
-def get_casefile(billingstatementID):
+def get_specific_casefile(billingstatementID):
     cursor = db.get_db().cursor()
-    cursor.execute('select employee_id, case_id, communication_type, number_of_hours,\
-        from billing_statement join client_case\
-        where billing_statement_id = {}').format(billingstatementID)
+    cursor.execute('SELECT * FROM billing_statement WHERE billing_statement_id = {0}').format(billingstatementID)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -88,7 +85,7 @@ def get_casefile(billingstatementID):
 
 # Update the given billing statement
 @billingstatements.route('/billingstatements/<billingstatementID>', methods=['PUT'])
-def get_casefile(billingstatementID):
+def put_casefile(billingstatementID):
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -101,9 +98,9 @@ def get_casefile(billingstatementID):
     communication_type = the_data['communication_type']
     number_of_hours = the_data['number_of_hours']
 
-    cursor.execute('update billing_statement\
-        set {}, {}, {}, {}\
-        where client_id = {}').format(employee_id, case_id, communication_type, number_of_hours, casefileID)
+    cursor.execute('UPDATE billing_statement\
+        SET {0}, {0}, {}, {0}\
+        WHERE client_id = {0}').format(employee_id, case_id, communication_type, number_of_hours, billingstatementID)
 
     db.get_db().commit()
     
@@ -111,9 +108,9 @@ def get_casefile(billingstatementID):
 
 # Delete the given billing statement
 @billingstatements.route('/billingstatements/<billingstatementID>', methods=['DELETE'])
-def put_casefiles(billingstatementID):
+def delete_casefiles(billingstatementID):
     cursor = db.get_db().cursor()
-    cursor.execute('delete from billing_statement where billing_statement_id = {0}'.format(billingstatementID))
+    cursor.execute('DELETE FROM billing_statement WHERE billing_statement_id = {0}'.format(billingstatementID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
