@@ -116,7 +116,7 @@ def update_event(eventID):
                    description = {},\
                    location = {},\
                    time = {}\
-                   WHERE client_id = {0}').format(event, description, location, time, eventID)
+                   WHERE client_id = {0}'.format(event, description, location, time, eventID))
     
     db.get_db().commit()
     
