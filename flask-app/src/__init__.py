@@ -19,7 +19,7 @@ def create_app():
     app.config['MYSQL_DATABASE_PASSWORD'] = open('/secrets/db_root_password.txt').readline().strip()
     app.config['MYSQL_DATABASE_HOST'] = 'db'
     app.config['MYSQL_DATABASE_PORT'] = 3306
-    app.config['MYSQL_DATABASE_DB'] = 'northwind'  # Change this to your DB name
+    app.config['MYSQL_DATABASE_DB'] = 'LHUB'  # Change this to your DB name
 
     # Initialize the database object with the settings above. 
     db.init_app(app)
@@ -37,6 +37,7 @@ def create_app():
     from src.products.products  import products
     from src.casefiles.casefiles  import casefiles
     from src.billingstatements.billingstatements import billingstatements
+    from src.employees.employees  import employees
 
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
@@ -44,6 +45,8 @@ def create_app():
     app.register_blueprint(products,    url_prefix='/p')
     app.register_blueprint(casefiles,    url_prefix='/cf')
     app.register_blueprint(billingstatements,    url_prefix='/bs')
+
+    app.register_blueprint(employees,    url_prefix='/e')
 
     # Don't forget to return the app object
     return app
