@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `LHUB`.`employee_event` (
    event_id INTEGER,
    employee_id INTEGER,
    PRIMARY KEY(event_id, employee_id),
-   FOREIGN KEY (event_id) REFERENCES events(event_id),
+   FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE,
    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
