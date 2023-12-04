@@ -105,17 +105,18 @@ def put_casefile(casefileID):
     close_date = the_data['close_date']
     employee_id = the_data['employee_id']
     client_id = the_data['client_id']
+    print(the_data)
     
     cursor.execute('UPDATE case_file SET\
-                   employee_id = {0},\
+                   employee_id = {},\
                    file = {}\
-                   WHERE client_id = {0}'.format(employee_id, file, casefileID))
+                   WHERE case_file_id = {}'.format(employee_id, getValString(file), casefileID))
     
     cursor.execute('UPDATE client_case SET\
                    start_date = {},\
                    close_date = {},\
-                   client_id = {0}\
-                   WHERE client_id = {0}'.format(start_date, close_date, client_id, casefileID))
+                   client_id = {}\
+                   WHERE client_id = {}'.format(getValString(start_date), getValString(close_date), client_id, casefileID))
     
     db.get_db().commit()
     

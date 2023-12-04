@@ -54,11 +54,11 @@ def post_casefiles():
     number_of_hours = the_data['number_of_hours']
 
     # Constructing the query
-    query = 'INSERT INTO products (employee_id, case_id, communication_type, number_of_hours) VALUES ("'
-    query += getValString(employee_id) + '", "'
-    query += getValString(case_id) + '", "'
-    query += getValString(communication_type) + '", '
-    query += getValString(number_of_hours) + ')'
+    query = 'INSERT INTO billing_statement (employee_id, case_id, communication_type, number_of_hours) VALUES ("'
+    query += str(employee_id) + '", "'
+    query += str(case_id) + '", "'
+    query += str(communication_type) + '", '
+    query += str(number_of_hours) + ')'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
