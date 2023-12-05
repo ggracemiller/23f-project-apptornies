@@ -113,7 +113,7 @@ def update_client_detail(id):
     query += 'last_name = ' + getValString(lastName) + ', '
     query += 'first_name = ' + getValString(firstName) + ', '
     query += 'phone_number = ' + getValString(phoneNumber) + ', '
-    query += 'email = ' + getValString(email) + ', '
+    query += 'email = ' + getValString(email) + ' '
     query += 'WHERE client_id = ' + str(id)
     current_app.logger.info(query)
 
