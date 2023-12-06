@@ -21,11 +21,16 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0} and client_id = {0}'.format(employee, client))
+        cursor.execute('SELECT * FROM billing_statement \
+                       JOIN client_case ON billing_statement.case_id = client_case.client_id \
+                       WHERE employee_id = {0} and client_case.client_id = {0}'.format(employee, client))
     elif employee:
         cursor.execute('SELECT * FROM billing_statement WHERE employee_id = {0}'.format(employee))
     elif client:
-        cursor.execute('SELECT * FROM billing_statement WHERE client_id = {0}'.format(client))
+        cursor.execute('SELECT * FROM billing_statement\
+                       JOIN client_case ON billing_statement.case_id = client_case.client_id \
+                       JOIN employee ON billing_statement.employee_id = employee.employee_id\
+                       WHERE client_id = {0}'.format(client))
     else:
         cursor.execute('SELECT * FROM billing_statement')
 

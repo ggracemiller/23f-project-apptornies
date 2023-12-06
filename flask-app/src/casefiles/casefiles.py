@@ -21,13 +21,18 @@ def get_casefiles():
     client = request.args.get('client')
 
     if employee and client:
-        cursor.execute('SELECT * FROM  case_file JOIN client_case WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
+        cursor.execute('SELECT * FROM  case_file JOIN client_case JOIN employee \
+                       WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
     elif employee:
-        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE employee_id = {0}'.format(employee))
+        cursor.execute('SELECT * FROM case_file JOIN client_case JOIN employee \
+                       WHERE employee_id = {0}'.format(employee))
     elif client:
-        cursor.execute('SELECT * FROM case_file JOIN client_case WHERE client_id = {0}'.format(client))
+        cursor.execute('SELECT * FROM case_file JOIN client_case JOIN employee\
+                       WHERE client_id = {0}'.format(client))
     else:
-        cursor.execute('SELECT * FROM case_file JOIN client_case ON case_file.case_id = client_case.case_id')
+        cursor.execute('SELECT * FROM case_file JOIN client_case \
+                       ON case_file.case_id = client_case.case_id\
+                       JOIN employee ')
 
     row_headers = [x[0] for x in cursor.description]
     json_data = []
