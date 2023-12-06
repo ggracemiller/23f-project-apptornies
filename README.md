@@ -1,8 +1,12 @@
-# MySQL + Flask Boilerplate Project
+# LHUB
 
-This repo contains a boilerplate setup for spinning up 3 Docker containers: 
-1. A MySQL 8 container for obvious reasons
-1. A Python Flask container to implement a REST API
+## Project Description
+
+LHUB is a secure and comprehensive database solution tailored for law firms to manage contact information and case histories efficiently. It offers tiered access levels to safeguard sensitive information, allowing only authorized personnel to view or modify past case details. With LHUB, law firms can enhance collaboration, maintain confidentiality, and streamline case management workflows. Clients can use LHUB to view information about their specific cases.
+
+This repo contains an application that runs using 3 Docker containers: 
+1. A MySQL 8 container
+1. A Python Flask container running a Flask API
 1. A Local AppSmith Server
 
 ## How to setup and start the containers
