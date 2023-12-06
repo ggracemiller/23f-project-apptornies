@@ -19,6 +19,8 @@ This repo contains an application that runs using 3 Docker containers:
 1. Build the images with `docker compose build`
 1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
 
+## Demonstration Video
 
+A Demo Video for LHUB can be found [here](https://drive.google.com/file/d/1Qb_E_Zlc7lSnGMbhCI_axPFa1bym6XMD/view?usp=sharing).
 
 
