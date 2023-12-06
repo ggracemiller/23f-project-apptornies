@@ -22,10 +22,10 @@ def get_casefiles():
 
     if employee and client:
         cursor.execute('SELECT * FROM  case_file JOIN client_case JOIN employee \
-                       WHERE employee_id = {0} AND client_id = {0}'.format(employee, client))
+                       WHERE case_file.employee_id = {0} AND client_id = {0}'.format(employee, client))
     elif employee:
         cursor.execute('SELECT * FROM case_file JOIN client_case JOIN employee \
-                       WHERE employee_id = {0}'.format(employee))
+                       WHERE case_file.employee_id = {0}'.format(employee))
     elif client:
         cursor.execute('SELECT * FROM case_file JOIN client_case JOIN employee\
                        WHERE client_id = {0}'.format(client))
