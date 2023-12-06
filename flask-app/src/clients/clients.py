@@ -64,7 +64,7 @@ def add_new_client():
     query += getValString(lastName) + ', '
     query += getValString(firstName) + ', '
     query += getValString(email) + ', '
-    query += getValString(phoneNumber) + ', '
+    query += getValString(phoneNumber) + ') '
     current_app.logger.info(query)
 
     # executing and committing the insert statement 

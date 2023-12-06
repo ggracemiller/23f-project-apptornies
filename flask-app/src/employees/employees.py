@@ -188,7 +188,7 @@ def get_employees_hourly_rates():
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT hourly_rate FROM employee')
+    cursor.execute("SELECT employee_id, employee_type, first_name, last_name, hourly_rate FROM employee WHERE employee_type = 'attorney'")
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
