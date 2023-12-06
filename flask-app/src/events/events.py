@@ -128,12 +128,7 @@ def delete_event():
     eventID = request.json
     cursor = db.get_db().cursor()
     cursor.execute('DELETE FROM events WHERE event_id = {0}'.format(eventID))
-    #row_headers = [x[0] for x in cursor.description]
-    #json_data = []
-    #theData = cursor.fetchall()
-    #for row in theData:
-    #    json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response("delete success", eventID)#(jsonify(json_data))
+    the_response = make_response("delete success", eventID)
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     db.get_db().commit()
