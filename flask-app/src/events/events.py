@@ -47,14 +47,14 @@ def add_event():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    event = the_data['event_id']
+    #event = the_data['event_id']
     description = the_data['event_description']
     location = the_data['event_location']
     time = the_data['event_datetime']
 
     # Constructing the query
-    query = 'insert into events (event_id, description, location, date_time) values (' 
-    query += getValString(event) + ', '
+    query = 'insert into events (description, location, date_time) values (' 
+    #query += getValString(event) + ', '
     query += getValString(description) + ', '
     query += getValString(location) + ', '
     query += getValString(time) + ')'
